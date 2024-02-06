@@ -2,26 +2,26 @@
 
 function tripkey($key)
 {
-	$key = ltrim($key, "#");
-	$salt = substr($key . "H.", 1, 2);
-	$salt = preg_replace('/[^.-z]/', ".", $salt); //print($salt."\n");
-	$salt = str_replace([':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`'], ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'a', 'b', 'c', 'd', 'e', 'f', 'g'], $salt);
-	$result = crypt($key, $salt);
-	return substr($result, -10);
+    $key = ltrim($key, "#");
+    $salt = substr($key . "H.", 1, 2);
+    $salt = preg_replace('/[^.-z]/', ".", $salt); //print($salt."\n");
+    $salt = str_replace([':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`'], ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'a', 'b', 'c', 'd', 'e', 'f', 'g'], $salt);
+    $result = crypt($key, $salt);
+    return substr($result, -10);
 }
 
 function tripkey12($key)
 {
-	$mark = substr($key, 0, 1);
-	if($mark == '#' || $mark == '$'){
-		if(preg_match('|^#([[:xdigit:]]{16})([./0-9A-Za-z]{0,2})?$|', $key, $matches)){
-			return substr(crypt(pack("H*", $matches[1]), "{$matches[2]}.."), -10);
-		}else{
-			return '???';
-		}
-	}else{
-		return str_replace(['+'], ['.'], substr(rtrim(base64_encode(sha1($key, true)), "="), 0, 12));
-	}
+    $mark = substr($key, 0, 1);
+    if($mark == '#' || $mark == '$'){
+        if(preg_match('|^#([[:xdigit:]]{16})([./0-9A-Za-z]{0,2})?$|', $key, $matches)){
+            return substr(crypt(pack("H*", $matches[1]), "{$matches[2]}.."), -10);
+        }else{
+            return '???';
+        }
+    }else{
+        return str_replace(['+'], ['.'], substr(rtrim(base64_encode(sha1($key, true)), "="), 0, 12));
+    }
 }
 
 printf("tripkey('#password') = '%s'\n", tripkey("#password"));
