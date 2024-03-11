@@ -14,7 +14,7 @@ function tripkey12($key)
 {
     $mark = substr($key, 0, 1);
     if($mark == '#' || $mark == '$'){
-        if(preg_match('|^#([[:xdigit:]]{16})([./0-9A-Za-z]{0,2})?$|', $key, $matches)){
+        if(preg_match('{^#([[:xdigit:]]{16})([./0-9A-Za-z]{0,2})?$}', $key, $matches)){
             return substr(crypt(pack("H*", $matches[1]), "{$matches[2]}.."), -10);
         }else{
             return '???';
